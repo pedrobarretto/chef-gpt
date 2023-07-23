@@ -1,19 +1,35 @@
+import { configDotenv } from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
 
 import { systemPrompt } from '../utils';
 
+configDotenv();
+
 export class ChefGPT {
   private configuration: Configuration;
+  private instance: OpenAIApi;
   constructor() {
+    console.log('process.env.OPENAI_API_KEY: ', process.env.OPENAI_API_KEY);
     this.configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
+  }
+
+  private getInstance() {
+    if (!this.instance) {
+      const instance = new OpenAIApi(this.configuration);
+      return instance;
+    }
+
+    return this.instance;
   }
 
   public createUserPrompt(ingredients: string[]) {
     const ingredientsList = ingredients
       .map((ingredient) => `- ${ingredient}`)
       .join('\n');
+
+    console.log(ingredientsList);
 
     const userPrompt = `
       You are ChefAI, the extraordinary culinary master! 🍳✨
@@ -29,7 +45,7 @@ export class ChefGPT {
   }
 
   public async getRecipe(ingredients: string[]) {
-    const instance = new OpenAIApi();
+    const instance = this.getInstance();
     const recipe = await instance.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
