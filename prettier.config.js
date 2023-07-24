@@ -1,3 +1,4 @@
 module.exports = {
-  singleQuotes: true
+  singleQuotes: true,
+  endOfLine: 'auto'
 };

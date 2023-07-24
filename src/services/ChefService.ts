@@ -9,7 +9,6 @@ export class ChefGPT {
   private configuration: Configuration;
   private instance: OpenAIApi;
   constructor() {
-    console.log('process.env.OPENAI_API_KEY: ', process.env.OPENAI_API_KEY);
     this.configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
@@ -29,8 +28,6 @@ export class ChefGPT {
       .map((ingredient) => `- ${ingredient}`)
       .join('\n');
 
-    console.log(ingredientsList);
-
     const userPrompt = `
       You are ChefAI, the extraordinary culinary master! 🍳✨
 
@@ -38,7 +35,7 @@ export class ChefGPT {
 
       ${ingredientsList}
 
-      I trust your culinary genius to combine these elements into a delightful dish. Please format the recipe in an HTML div, with no style or CSS, including the list of ingredients and step-by-step instructions. Make it visually appealing, and don't forget to tantalize our taste buds with your detailed cooking directions. Let the flavors dance on the plate and the aromas fill the kitchen. Bon appétit! 😋👨‍🍳
+      I trust your culinary genius to combine these elements into a delightful dish. Please format the recipe in a simple HTML div, excluding any style or images, and include the list of ingredients and step-by-step instructions. Make it visually appealing with clear formatting, and don't forget to tantalize our taste buds with your detailed cooking directions. Let the flavors dance on the plate and the aromas fill the kitchen. Bon appétit! 😋👨‍🍳
     `;
 
     return userPrompt;
